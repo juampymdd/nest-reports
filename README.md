@@ -28,8 +28,24 @@
 
 ## Installation
 
+1. Clone the repository
+
+2. Install the dependencies
+
 ```bash
 $ pnpm install
+```
+
+2. Start the database
+
+```bash
+$ docker-compose up -d
+```
+
+3. Generate Prisma Client
+
+```bash
+$ npx prisma generate
 ```
 
 ## Running the app
