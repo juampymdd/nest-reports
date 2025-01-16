@@ -42,13 +42,15 @@ $ pnpm install
 $ docker-compose up -d
 ```
 
-3. Generate Prisma Client
+3. Clone `.env.example` to `.env` and fill in the necessary environment variables
+
+4. Generate Prisma Client
 
 ```bash
 $ npx prisma generate
 ```
 
-## Running the app
+# # Running the app
 
 ```bash
 # development
