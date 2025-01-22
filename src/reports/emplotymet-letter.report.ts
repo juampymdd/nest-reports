@@ -27,7 +27,7 @@ export const getEmploymentLetterReport = (): TDocumentDefinitions => {
   const docDefinition: TDocumentDefinitions = {
     styles: style,
     pageMargins: [40, 60, 40, 60],
-    header: getHeaderSection({ showLogo: false }),
+    header: getHeaderSection({ showLogo: true }),
     content: [
       {
         text: 'CONSTANCIA DE EMPLEO',
@@ -60,8 +60,3 @@ export const getEmploymentLetterReport = (): TDocumentDefinitions => {
 
   return docDefinition;
 };
-
-// [Nombre del Empleador] \n
-// [Cargo del Empleador] \n
-// [Nombre de la Empresa] \n
-// [Fecha de Emisión] \n
