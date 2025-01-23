@@ -2,7 +2,12 @@ import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
 import { PrinterService } from 'src/printer/printer.service';
-import { getCountriesReport, getEmploymentLetterByIdReport, getEmploymentLetterReport, getHelloWorldReport } from 'src/reports';
+import {
+  getCountriesReport,
+  getEmploymentLetterByIdReport,
+  getEmploymentLetterReport,
+  getHelloWorldReport,
+} from 'src/reports';
 
 @Injectable()
 export class BasicReportsService extends PrismaClient implements OnModuleInit {
@@ -31,9 +36,10 @@ export class BasicReportsService extends PrismaClient implements OnModuleInit {
     return doc;
   }
 
-  async employmentLetterById(id:string) {
-
-    const employee = await this.employees.findUnique({where: {id: Number(id)}});
+  async employmentLetterById(id: string) {
+    const employee = await this.employees.findUnique({
+      where: { id: Number(id) },
+    });
     if (!employee) {
       throw new NotFoundException('Employee not found');
     }
@@ -54,11 +60,18 @@ export class BasicReportsService extends PrismaClient implements OnModuleInit {
   }
 
   async getCountries() {
-    const docDefinition = getCountriesReport({ name: 'John Doe' });
+    const countries = await this.countries.findMany({
+      where: { local_name: { not: null } },
+    });
+
+    const docDefinition = getCountriesReport({
+      title: 'Country Report',
+      subTitle: 'List of Countries',
+      countries,
+    });
 
     const doc = this.printerService.createPdf(docDefinition);
 
     return doc;
   }
-
 }

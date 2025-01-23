@@ -1,4 +1,4 @@
-import { Content, StyleDictionary, Style } from 'pdfmake/interfaces';
+import { Content } from 'pdfmake/interfaces';
 import { DateFormatter } from 'src/helpers/date-formatter';
 
 const logo: Content = {
@@ -9,37 +9,60 @@ const logo: Content = {
   margin: [0, 0, 0, 20],
 };
 
+const currentDate: Content = {
+  text: DateFormatter.getDDMMMMYYYY(new Date()),
+  alignment: 'right',
+  margin: [20, 30],
+  width: 150,
+};
+
 interface HeaderOptions {
   title?: string;
-  subtitle?: string;
+  subTitle?: string;
   showLogo?: boolean;
   showDate?: boolean;
 }
-const style: StyleDictionary = {
-  subheader: {
-    fontSize: 16,
-    bold: true,
-    margin: [0, 0, 0, 20],
-  },
-};
-
 
 export const getHeaderSection = (options: HeaderOptions): Content => {
+  const { title, subTitle, showLogo = true, showDate = true } = options;
 
-  const { title, subtitle, showLogo, showDate } = options;
-  const headerLogo: Content = showLogo ? logo : { text: '' };
-  const headerTitle: Content = title ? { text: title, style: 'subheader' } : { text: '' };
-  const headerDate: Content = showDate ? { text: `${DateFormatter.getDDMMMMYYYY(new Date())}`, alignment: 'right', margin: [0, 20, 20, 20], style: 'subheader' } : { text: '' };
-  return {
-    columns: [
-      headerLogo,
-      {
+  const headerLogo: Content = showLogo ? logo : null;
+  const headerDate: Content = showDate ? currentDate : null;
+
+  const headerSubTitle: Content = subTitle
+    ? {
+        text: subTitle,
+        alignment: 'center',
+        margin: [0, 2, 0, 0],
+        style: {
+          fontSize: 16,
+          bold: true,
+        },
+      }
+    : null;
+
+  const headerTitle: Content = title
+    ? {
         stack: [
-          headerTitle,
-          { text: subtitle, style: 'subheader' },
+          {
+            text: title,
+            alignment: 'center',
+            margin: [0, 15, 0, 0],
+            style: {
+              bold: true,
+              fontSize: 22,
+            },
+          },
+          headerSubTitle,
         ],
-      },
-      headerDate,
-    ],
+        // text: title,
+        // style: {
+        //   bold: true,
+        // },
+      }
+    : null;
+
+  return {
+    columns: [headerLogo, headerTitle, headerDate],
   };
 };
