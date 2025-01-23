@@ -1,4 +1,4 @@
-import { Content } from 'pdfmake/interfaces';
+import { Content, StyleDictionary, Style } from 'pdfmake/interfaces';
 import { DateFormatter } from 'src/helpers/date-formatter';
 
 const logo: Content = {
@@ -15,17 +15,31 @@ interface HeaderOptions {
   showLogo?: boolean;
   showDate?: boolean;
 }
+const style: StyleDictionary = {
+  subheader: {
+    fontSize: 16,
+    bold: true,
+    margin: [0, 0, 0, 20],
+  },
+};
+
 
 export const getHeaderSection = (options: HeaderOptions): Content => {
+
   const { title, subtitle, showLogo, showDate } = options;
+  const headerLogo: Content = showLogo ? logo : { text: '' };
+  const headerTitle: Content = title ? { text: title, style: 'subheader' } : { text: '' };
+  const headerDate: Content = showDate ? { text: `${DateFormatter.getDDMMMMYYYY(new Date())}`, alignment: 'right', margin: [0, 20, 20, 20], style: 'subheader' } : { text: '' };
   return {
     columns: [
-      showLogo ? logo : '',
+      headerLogo,
       {
-        text: `${DateFormatter.getDDMMMMYYYY(new Date())}`,
-        alignment: 'right',
-        margin: [0, 20, 20, 20],
+        stack: [
+          headerTitle,
+          { text: subtitle, style: 'subheader' },
+        ],
       },
+      headerDate,
     ],
   };
 };
