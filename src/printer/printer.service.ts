@@ -15,7 +15,7 @@ const fonts = {
   },
 };
 
-const custonTableLayouts: Record<string, CustomTableLayout> = {
+const customTableLayouts: Record<string, CustomTableLayout> = {
   blueHeaders: {
     hLineWidth: function (i, node) {
       if (i === 0 || i === node.table.body.length) {
@@ -35,6 +35,9 @@ const custonTableLayouts: Record<string, CustomTableLayout> = {
     paddingRight: function (i, node) {
       return i === node.table.widths.length - 1 ? 0 : 8;
     },
+    fillColor: function (i) {
+      return i === 0 ? '#9895ff' : i % 2 === 0 ? '#f3f3f3' : null;
+    }
   },
 };
 
@@ -44,7 +47,7 @@ export class PrinterService {
 
   createPdf(
     docDefinition: TDocumentDefinitions,
-    options: BufferOptions = {},
+    options: BufferOptions = {tableLayouts: customTableLayouts},
   ): PDFKit.PDFDocument {
     return this.printer.createPdfKitDocument(docDefinition, options);
   }

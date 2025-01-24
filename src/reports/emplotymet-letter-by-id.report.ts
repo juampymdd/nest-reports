@@ -6,7 +6,6 @@ import {
 import { getHeaderSection } from './sections/header.section';
 import { DateFormatter } from 'src/helpers/date-formatter';
 
-
 interface ReportValues {
   employerName: string;
   employerPosition: string;
@@ -35,8 +34,10 @@ const style: StyleDictionary = {
   },
 };
 
-export const getEmploymentLetterByIdReport = (values: ReportValues): TDocumentDefinitions => {
-  const { 
+export const getEmploymentLetterByIdReport = (
+  values: ReportValues,
+): TDocumentDefinitions => {
+  const {
     employeeName,
     employeePosition,
     employeeStartDate,
@@ -45,7 +46,7 @@ export const getEmploymentLetterByIdReport = (values: ReportValues): TDocumentDe
     employerName,
     employerPosition,
     employerCompanyName,
-   } = values;
+  } = values;
   const docDefinition: TDocumentDefinitions = {
     styles: style,
     pageMargins: [40, 60, 40, 60],
