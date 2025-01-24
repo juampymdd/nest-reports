@@ -36,7 +36,7 @@ const customTableLayouts: Record<string, CustomTableLayout> = {
       return i === node.table.widths.length - 1 ? 0 : 8;
     },
     fillColor: function (i) {
-      return i === 0 ? '#9895ff' : i % 2 === 0 ? '#f3f3f3' : null;
+      return i === 0 ? '#7b90be' : i % 2 === 0 ? '#f3f3f3' : null;
     }
   },
 };
