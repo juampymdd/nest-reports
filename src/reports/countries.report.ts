@@ -1,6 +1,7 @@
 import { TDocumentDefinitions } from 'pdfmake/interfaces';
 import { getHeaderSection } from './sections/header.section';
 import { countries as Country } from '@prisma/client';
+import { getFooterSection } from './sections/footer.section';
 
 interface ReportOptions {
   title: string;
@@ -29,6 +30,7 @@ export const getCountriesReport = (
       title: title ?? 'Countries Report',
       subTitle: subTitle ?? 'List of Countries',
     }),
+    footer: getFooterSection,
     pageMargins: [40, 110, 40, 60],
     content: [
       {
@@ -49,6 +51,39 @@ export const getCountriesReport = (
               country.continent,
               country.local_name,
             ]),
+            ['', '', '', '', '', ''],
+            [
+              '',
+              '',
+              '',
+              '',
+              'Total',
+              { text: `${countries.length} countries`, bold: true },
+            ],
+          ],
+        },
+      },
+      {
+        text: 'Totales',
+        style: {
+          bold: true,
+          fontSize: 18,
+          margin: [0, 40, 0, 0],
+        },
+      },
+      {
+        layout: 'noBorders',
+        table: {
+          headerRows: 1,
+          body: [
+            ['Total Countries: ', { text: countries.length, bold: true }],
+            [
+              'Total Continents: ',
+              {
+                text: new Set(countries.map((c) => c.continent)).size,
+                bold: true,
+              },
+            ],
           ],
         },
       },

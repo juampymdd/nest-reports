@@ -1,7 +1,13 @@
-export const footerSection = () => {
+import { Content } from 'pdfmake/interfaces';
+
+export const getFooterSection = (
+  currentPage: number,
+  pageCount: number,
+): Content => {
   return {
-    text: 'Footer',
-    alignment: 'center',
-    margin: [0, 0, 0, 20],
+    text: `Page ${currentPage} of ${pageCount}`,
+    bold: true,
+    alignment: 'right',
+    margin: [0, 10, 35, 0],
   };
 };
