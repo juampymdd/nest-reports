@@ -68,9 +68,32 @@ export const orderByIdReport = ():TDocumentDefinitions => {
                     [2, 'Producto 2', 2, 20, {text: CurrencyFormatter.formatCurrency(40), alignment: 'right'}],
                     [3, 'Producto 3', 3, 30, {text: CurrencyFormatter.formatCurrency(90), alignment: 'right'}],
                     [4, 'Producto 4', 4, 40, {text: CurrencyFormatter.formatCurrency(150), alignment: 'right'}],
-                    
-                                   ]
+                ]
             }
+        },{
+            columns: [
+                {
+                 width: '*',
+                 text: ''
+                },
+                {
+                    width: 'auto', 
+                    layout: 'noBorders', 
+                    table: {
+                        body: [
+                            ['Subtotal', {
+                                text: CurrencyFormatter.formatCurrency(288), 
+                                alignment: 'right'}],
+                                [{text: 'Total', bold: true}, {
+                                    text: CurrencyFormatter.formatCurrency(1200), 
+                                    alignment: 'right',
+                                    bold: true
+                                }],
+                            
+                        ]
+                    }}
+            ]
+            
         }
 
     ]
