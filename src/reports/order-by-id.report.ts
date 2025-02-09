@@ -60,7 +60,7 @@ const styles: StyleDictionary = {
 }
 
 export const orderByIdReport = (values: ReportValues):TDocumentDefinitions => {
-
+    const {data} = values;
     return {
         styles: styles,
         header: logo,
@@ -75,8 +75,8 @@ export const orderByIdReport = (values: ReportValues):TDocumentDefinitions => {
                             Ottawa ON K2Y 9X1, CANADA
                             BN: 12783671823
                             https://devtalles.com`  },
-                { text: [{text:`Order ID: 123456 \n`, bold: true},
-                     `Fecha del recibo ${DateFormatter.getDDMMMMYYYY(new Date())}
+                { text: [{text:`Order ID: ${data.order_id} \n`, bold: true},
+                     `Fecha del recibo ${DateFormatter.getDDMMMMYYYY(data.order_date)}
                      pagar antes de ${DateFormatter.getDDMMMMYYYY(new Date())}`], alignment: 'right' 
                 },
             ] 
@@ -84,9 +84,8 @@ export const orderByIdReport = (values: ReportValues):TDocumentDefinitions => {
         {qr: 'https://devtalles.com', fit: 75, alignment: 'right'},  
         { text: [{text:`Cobrar a:`, bold: true},
         `
-            Razón Social: Richter Supermarkt
-            Michael Holz
-            Grenzacherweg 237
+            Razón Social: ${data.customers.customer_name}
+            ${data.customers.address}
             `]
         },
         {
@@ -103,11 +102,16 @@ export const orderByIdReport = (values: ReportValues):TDocumentDefinitions => {
                         {text: 'Precio', bold: true}, 
                         {text: 'Total', bold: true}
                     ],
-
-                    [1, 'Producto 1', 1, 10, {text: CurrencyFormatter.formatCurrency(10870), alignment: 'right'}],
-                    [2, 'Producto 2', 2, 20, {text: CurrencyFormatter.formatCurrency(40), alignment: 'right'}],
-                    [3, 'Producto 3', 3, 30, {text: CurrencyFormatter.formatCurrency(90), alignment: 'right'}],
-                    [4, 'Producto 4', 4, 40, {text: CurrencyFormatter.formatCurrency(150), alignment: 'right'}],
+                    ...data.order_details.map((orderDetail) => {
+                        return [
+                            orderDetail.product_id,
+                            orderDetail.products.product_name,
+                            orderDetail.quantity,
+                            {text: CurrencyFormatter.formatCurrency(+orderDetail.products.price), alignment: 'right'},
+                            {text: CurrencyFormatter.formatCurrency(+orderDetail.products.price * orderDetail.quantity), alignment: 'right'}
+                        ]
+                    }),
+                    
                 ]
             }
         },{
@@ -122,10 +126,14 @@ export const orderByIdReport = (values: ReportValues):TDocumentDefinitions => {
                     table: {
                         body: [
                             ['Subtotal', {
-                                text: CurrencyFormatter.formatCurrency(288), 
+                                text: CurrencyFormatter.formatCurrency(data.order_details.reduce((acc, orderDetail) => {
+                                    return acc + (+orderDetail.products.price * orderDetail.quantity)
+                                    }, 0)),
                                 alignment: 'right'}],
                                 [{text: 'Total', bold: true}, {
-                                    text: CurrencyFormatter.formatCurrency(1200), 
+                                    text: CurrencyFormatter.formatCurrency(data.order_details.reduce((acc, orderDetail) => {
+                                        return acc + (+orderDetail.products.price * orderDetail.quantity)
+                                    }, 0)),
                                     alignment: 'right',
                                     bold: true
                                 }], 
